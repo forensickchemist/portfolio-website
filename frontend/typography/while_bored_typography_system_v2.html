@@ -1,0 +1,540 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+.wb{font-family:'Inter',sans-serif;color:var(--color-text-primary);padding:0 0 2rem}
+.wb-hdr{display:flex;align-items:center;gap:14px;padding:1.5rem 0 1rem;border-bottom:1px solid var(--color-border-tertiary);margin-bottom:1.25rem}
+.wb-logo{background:#000;border:2px solid #000;padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#fff;line-height:1.2;border-radius:3px}
+.wb-hdr h1{font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;color:var(--color-text-primary)}
+.wb-hdr p{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.ctrl-row{display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center}
+.ctrl-grp{display:flex;gap:4px}
+.ctrl-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--color-text-secondary);margin-right:4px;line-height:28px}
+.seg-btn{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;border-radius:4px;transition:all .15s}
+.seg-btn.on{background:#0FA3B1;border-color:#0FA3B1;color:#fff}
+.tab-bar{display:flex;gap:2px;margin-bottom:1.25rem;border-bottom:1px solid var(--color-border-tertiary)}
+.tab-btn{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:7px 12px;border:none;background:transparent;color:var(--color-text-secondary);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tab-btn.on{color:#0FA3B1;border-bottom-color:#0FA3B1}
+.tab-panel{display:none}
+.tab-panel.on{display:block}
+.sec-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0FA3B1;margin-bottom:10px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1.1rem 1.2rem;margin-bottom:.9rem}
+.card-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.card-hdr h3{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-secondary)}
+.card-hdr p{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.fbadge{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);white-space:nowrap}
+.spec-sep{border-top:0.5px solid var(--color-border-tertiary);padding-top:12px}
+.meta-row{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap}
+.meta-it{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--color-text-secondary)}
+.meta-it span{color:#0FA3B1;font-weight:600}
+.mode-demo{border-radius:10px;padding:1.2rem;margin-top:10px}
+.mode-demo.light{background:#F8FAFC;border:1px solid #E2E8F0}
+.mode-demo.dark{background:#0B1220;border:1px solid rgba(255,255,255,.08)}
+.demo-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.demo-col p.demo-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.demo-col.on-light .demo-lbl{color:#0B6E79}
+.demo-col.on-dark .demo-lbl{color:#0FA3B1}
+.swatch-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.swatch{width:14px;height:14px;border-radius:3px;flex-shrink:0;border:0.5px solid rgba(0,0,0,.08)}
+.swatch-info{font-family:'IBM Plex Mono',monospace;font-size:10px}
+.tbl-wrap{overflow-x:auto;border:0.5px solid var(--color-border-tertiary);border-radius:12px}
+table.st{width:100%;border-collapse:collapse;font-size:12px;min-width:560px}
+table.st th{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--color-text-secondary);padding:8px 10px;text-align:left;border-bottom:1px solid var(--color-border-tertiary);background:var(--color-background-secondary)}
+table.st td{padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:middle}
+table.st tr:last-child td{border-bottom:none}
+table.st tr:hover td{background:var(--color-background-secondary)}
+.tpill{font-family:'IBM Plex Mono',monospace;font-size:9px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:3px;padding:1px 5px;color:var(--color-text-secondary)}
+.utag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:1px 6px;border-radius:3px;display:inline-block;margin-right:3px}
+.t-teal{background:#D9F3F6;color:#0B6E79}
+.t-gold{background:#F5E6A3;color:#8B6914}
+.t-gray{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary)}
+.bp-pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;border-radius:10px;font-weight:600}
+.bp-sm{background:#D9F3F6;color:#0B6E79}
+.bp-md{background:#F5E6A3;color:#8B6914}
+.bp-lg{background:#E8E4FC;color:#4A38A0}
+.css-blk{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:.9rem;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.7;color:var(--color-text-primary);overflow-x:auto;margin-top:8px}
+.cc{color:var(--color-text-secondary);font-style:italic}
+.cp{color:#0FA3B1}
+.cv{color:#D4AF37}
+.cs{color:var(--color-text-primary);font-weight:600}
+.copy-btn{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:3px 8px;border:0.5px solid var(--color-border-secondary);border-radius:3px;background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;float:right}
+.copy-btn:hover{background:var(--color-background-secondary)}
+.rule-list{list-style:none;margin-top:8px}
+.rule-list li{display:flex;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px;align-items:flex-start;line-height:1.5}
+.rule-list li:last-child{border-bottom:none}
+.ri-ok{color:#0FA3B1;flex-shrink:0;margin-top:1px}
+.ri-bad{color:#ef4444;flex-shrink:0;margin-top:1px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.half-card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:.9rem}
+.half-card p.lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#0FA3B1;margin-bottom:8px}
+.nav-prev{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#0B1220;border-radius:7px;margin-bottom:10px}
+.nav-logo{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:12px;color:#fff;line-height:1.2}
+.nav-links{display:flex;gap:14px}
+.nav-link{font-family:'Inter',sans-serif;font-size:12px;color:#94A3B8}
+.nav-cta{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;background:#0FA3B1;color:#fff;padding:4px 10px;border-radius:5px}
+.hero-prev{padding:1rem 0}
+.h-badge{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0FA3B1;border:1px solid #0FA3B1;display:inline-block;padding:2px 7px;border-radius:3px;margin-bottom:8px}
+.h-title{font-family:'Manrope',sans-serif;font-weight:800;line-height:1.1;letter-spacing:-0.02em;color:#E5E7EB;margin-bottom:8px}
+.h-sub{font-family:'Inter',sans-serif;line-height:1.6;color:#94A3B8;margin-bottom:12px;max-width:460px}
+.h-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-p{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:#0FA3B1;color:#fff;padding:7px 14px;border-radius:6px;display:inline-block}
+.btn-s{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:transparent;color:#E5E7EB;padding:7px 14px;border-radius:6px;border:1px solid #94A3B8;display:inline-block}
+.proj-card{background:#111827;border:0.5px solid rgba(255,255,255,.07);border-radius:9px;padding:12px;margin-top:8px}
+.c-tags{display:flex;gap:5px;margin-bottom:6px;flex-wrap:wrap}
+.c-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(15,163,177,.15);color:#0FA3B1;font-weight:600}
+.c-tag-g{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(212,175,55,.12);color:#D4AF37;font-weight:600;border:1px solid rgba(212,175,55,.25)}
+.c-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:700;color:#E5E7EB;margin-bottom:5px}
+.c-body{font-family:'Inter',sans-serif;font-size:12px;color:#94A3B8;line-height:1.5;margin-bottom:8px}
+.c-cta{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:#0FA3B1}
+.mode-badge{display:inline-flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+.mb-light{background:#E2E8F0;color:#334155}
+.mb-dark{background:#1E293B;color:#94A3B8}
+code.ic{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--color-background-secondary);padding:1px 4px;border-radius:3px;color:var(--color-text-secondary)}
+</style>
+
+<div class="wb">
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">while bored — full typography system: light/dark mode, mobile/tablet/desktop breakpoints</h2>
+
+<div class="wb-hdr">
+  <div class="wb-logo">fritzc<br>dev</div>
+  <div>
+    <h1>Typography System <span style="color:#0FA3B1">v2</span></h1>
+    <p>Light &amp; dark mode · Mobile / Tablet / Desktop · IBM Plex Mono · Manrope · Inter</p>
+  </div>
+</div>
+
+<div class="ctrl-row">
+  <span class="ctrl-lbl">Mode</span>
+  <div class="ctrl-grp">
+    <button class="seg-btn on" id="m-both" onclick="setMode('both')">Both</button>
+    <button class="seg-btn" id="m-light" onclick="setMode('light')"><i class="ti ti-sun" aria-hidden="true"></i> Light</button>
+    <button class="seg-btn" id="m-dark" onclick="setMode('dark')"><i class="ti ti-moon" aria-hidden="true"></i> Dark</button>
+  </div>
+  <span class="ctrl-lbl" style="margin-left:8px">Breakpoint</span>
+  <div class="ctrl-grp">
+    <button class="seg-btn on" id="bp-all" onclick="setBp('all')">All</button>
+    <button class="seg-btn" id="bp-sm" onclick="setBp('sm')"><i class="ti ti-device-mobile" aria-hidden="true"></i> Mobile</button>
+    <button class="seg-btn" id="bp-md" onclick="setBp('md')"><i class="ti ti-device-tablet" aria-hidden="true"></i> Tablet</button>
+    <button class="seg-btn" id="bp-lg" onclick="setBp('lg')"><i class="ti ti-device-laptop" aria-hidden="true"></i> Desktop</button>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn on" onclick="switchTab('scale')">Type Scale</button>
+  <button class="tab-btn" onclick="switchTab('colors')">Color Tokens</button>
+  <button class="tab-btn" onclick="switchTab('specimens')">Specimens</button>
+  <button class="tab-btn" onclick="switchTab('css')">CSS Code</button>
+  <button class="tab-btn" onclick="switchTab('rules')">Rules</button>
+</div>
+
+<!-- SCALE TAB -->
+<div id="tab-scale" class="tab-panel on">
+  <p class="sec-lbl">Type scale — sizes by breakpoint</p>
+  <div class="tbl-wrap">
+  <table class="st" id="scale-table">
+    <thead>
+      <tr>
+        <th>Token</th>
+        <th>Font</th>
+        <th>Weight</th>
+        <th id="col-sm" class="bp-col">Mobile <span class="bp-pill bp-sm">&lt;768px</span></th>
+        <th id="col-md" class="bp-col">Tablet <span class="bp-pill bp-md">768–1199</span></th>
+        <th id="col-lg" class="bp-col">Desktop <span class="bp-pill bp-lg">1200+</span></th>
+        <th>Leading</th>
+        <th>Tracking</th>
+        <th>Used for</th>
+      </tr>
+    </thead>
+    <tbody id="scale-body"></tbody>
+  </table>
+  </div>
+</div>
+
+<!-- COLOR TOKENS TAB -->
+<div id="tab-colors" class="tab-panel">
+  <p class="sec-lbl">Typography color tokens</p>
+  <div id="color-panels"></div>
+</div>
+
+<!-- SPECIMENS TAB -->
+<div id="tab-specimens" class="tab-panel">
+  <p class="sec-lbl">Live component specimens</p>
+  <div id="spec-wrap"></div>
+</div>
+
+<!-- CSS CODE TAB -->
+<div id="tab-css" class="tab-panel">
+  <p class="sec-lbl">Copy-ready CSS</p>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:13px">Font import + families</strong><button class="copy-btn" onclick="cp('c1')">Copy</button></div>
+    <div class="css-blk" id="c1"><span class="cc">/* Google Fonts */</span>
+<span class="cs">@import url</span>(<span class="cv">'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap'</span>);
+
+<span class="cs">:root</span> {
+  <span class="cp">--font-logo</span>:    <span class="cv">'IBM Plex Mono'</span>, monospace;
+  <span class="cp">--font-heading</span>: <span class="cv">'Manrope'</span>, sans-serif;
+  <span class="cp">--font-body</span>:    <span class="cv">'Inter'</span>, sans-serif;
+  <span class="cp">--font-label</span>:   <span class="cv">'IBM Plex Mono'</span>, monospace;
+  <span class="cp">--font-code</span>:    <span class="cv">'IBM Plex Mono'</span>, monospace;
+}</div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:13px">Responsive type scale (clamp)</strong><button class="copy-btn" onclick="cp('c2')">Copy</button></div>
+    <div class="css-blk" id="c2"><span class="cs">:root</span> {
+  <span class="cc">/* Display — hero only */</span>
+  <span class="cp">--text-display-xl</span>: <span class="cv">clamp(32px, 6vw, 64px)</span>;
+  <span class="cp">--text-display-lg</span>: <span class="cv">clamp(26px, 5vw, 48px)</span>;
+
+  <span class="cc">/* Headings */</span>
+  <span class="cp">--text-heading-xl</span>: <span class="cv">clamp(22px, 3.5vw, 36px)</span>;
+  <span class="cp">--text-heading-lg</span>: <span class="cv">clamp(18px, 2.8vw, 28px)</span>;
+  <span class="cp">--text-heading-md</span>: <span class="cv">clamp(16px, 2vw, 22px)</span>;
+  <span class="cp">--text-heading-sm</span>: <span class="cv">clamp(15px, 1.6vw, 18px)</span>;
+
+  <span class="cc">/* Body */</span>
+  <span class="cp">--text-body-lg</span>:    <span class="cv">clamp(16px, 1.5vw, 18px)</span>;
+  <span class="cp">--text-body-md</span>:    <span class="cv">15px</span>;
+  <span class="cp">--text-body-sm</span>:    <span class="cv">13px</span>;
+  <span class="cp">--text-body-xs</span>:    <span class="cv">12px</span>;
+
+  <span class="cc">/* UI */</span>
+  <span class="cp">--text-ui-md</span>:      <span class="cv">14px</span>;
+  <span class="cp">--text-ui-sm</span>:      <span class="cv">12px</span>;
+
+  <span class="cc">/* Labels — IBM Plex Mono */</span>
+  <span class="cp">--text-label-lg</span>:   <span class="cv">11px</span>;
+  <span class="cp">--text-label-md</span>:   <span class="cv">10px</span>;
+  <span class="cp">--text-code-md</span>:    <span class="cv">13px</span>;
+}</div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:13px">Color tokens — light &amp; dark</strong><button class="copy-btn" onclick="cp('c3')">Copy</button></div>
+    <div class="css-blk" id="c3"><span class="cc">/* Light mode (default) */</span>
+<span class="cs">:root</span> {
+  <span class="cp">--color-teal</span>:        <span class="cv">#0FA3B1</span>;
+  <span class="cp">--color-deep-teal</span>:   <span class="cv">#0B6E79</span>;
+  <span class="cp">--color-soft-teal</span>:   <span class="cv">#D9F3F6</span>;
+  <span class="cp">--color-gold</span>:        <span class="cv">#B8860B</span>; <span class="cc">/* deep gold on light bg */</span>
+  <span class="cp">--color-gold-bg</span>:     <span class="cv">#F5E6A3</span>;
+
+  <span class="cp">--color-text-h</span>:      <span class="cv">#0F172A</span>; <span class="cc">/* headings */</span>
+  <span class="cp">--color-text-body</span>:   <span class="cv">#1E293B</span>; <span class="cc">/* body */</span>
+  <span class="cp">--color-text-muted</span>:  <span class="cv">#64748B</span>; <span class="cc">/* muted / descriptions */</span>
+  <span class="cp">--color-text-label</span>:  <span class="cv">#0B6E79</span>; <span class="cc">/* mono labels */</span>
+  <span class="cp">--color-text-feat</span>:   <span class="cv">#B8860B</span>; <span class="cc">/* featured gold */</span>
+  <span class="cp">--color-text-link</span>:   <span class="cv">#0FA3B1</span>; <span class="cc">/* links / CTAs */</span>
+
+  <span class="cp">--color-bg</span>:          <span class="cv">#F8FAFC</span>;
+  <span class="cp">--color-surface</span>:     <span class="cv">#FFFFFF</span>;
+}
+
+<span class="cc">/* Dark mode */</span>
+<span class="cs">@media (prefers-color-scheme: dark)</span> {
+  <span class="cs">:root</span> {
+    <span class="cp">--color-gold</span>:        <span class="cv">#D4AF37</span>;
+    <span class="cp">--color-gold-bg</span>:     <span class="cv">rgba(212,175,55,.15)</span>;
+
+    <span class="cp">--color-text-h</span>:      <span class="cv">#E5E7EB</span>;
+    <span class="cp">--color-text-body</span>:   <span class="cv">#CBD5E1</span>;
+    <span class="cp">--color-text-muted</span>:  <span class="cv">#94A3B8</span>;
+    <span class="cp">--color-text-label</span>:  <span class="cv">#0FA3B1</span>;
+    <span class="cp">--color-text-feat</span>:   <span class="cv">#D4AF37</span>;
+    <span class="cp">--color-text-link</span>:   <span class="cv">#0FA3B1</span>;
+
+    <span class="cp">--color-bg</span>:          <span class="cv">#0B1220</span>;
+    <span class="cp">--color-surface</span>:     <span class="cv">#111827</span>;
+  }
+}</div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:13px">Utility classes</strong><button class="copy-btn" onclick="cp('c4')">Copy</button></div>
+    <div class="css-blk" id="c4"><span class="cc">/* --- Headings --- */</span>
+<span class="cs">.display-xl</span> { font-family:var(<span class="cp">--font-heading</span>); font-weight:<span class="cv">800</span>; font-size:var(<span class="cp">--text-display-xl</span>); letter-spacing:<span class="cv">-0.025em</span>; line-height:<span class="cv">1.0</span>; }
+<span class="cs">.heading-lg</span>  { font-family:var(<span class="cp">--font-heading</span>); font-weight:<span class="cv">700</span>; font-size:var(<span class="cp">--text-heading-lg</span>); letter-spacing:<span class="cv">-0.015em</span>; line-height:<span class="cv">1.15</span>; }
+<span class="cs">.heading-md</span>  { font-family:var(<span class="cp">--font-heading</span>); font-weight:<span class="cv">700</span>; font-size:var(<span class="cp">--text-heading-md</span>); letter-spacing:<span class="cv">-0.01em</span>;  line-height:<span class="cv">1.25</span>; }
+<span class="cs">.heading-sm</span>  { font-family:var(<span class="cp">--font-heading</span>); font-weight:<span class="cv">600</span>; font-size:var(<span class="cp">--text-heading-sm</span>); letter-spacing:<span class="cv">-0.005em</span>; line-height:<span class="cv">1.3</span>; }
+
+<span class="cc">/* --- Body --- */</span>
+<span class="cs">.body-lg</span> { font-family:var(<span class="cp">--font-body</span>); font-weight:<span class="cv">400</span>; font-size:var(<span class="cp">--text-body-lg</span>); line-height:<span class="cv">1.7</span>; }
+<span class="cs">.body-md</span> { font-family:var(<span class="cp">--font-body</span>); font-weight:<span class="cv">400</span>; font-size:var(<span class="cp">--text-body-md</span>); line-height:<span class="cv">1.7</span>; }
+<span class="cs">.body-sm</span> { font-family:var(<span class="cp">--font-body</span>); font-weight:<span class="cv">400</span>; font-size:var(<span class="cp">--text-body-sm</span>); line-height:<span class="cv">1.6</span>; }
+
+<span class="cc">/* --- Labels / Mono --- */</span>
+<span class="cs">.label-accent</span> { font-family:var(<span class="cp">--font-label</span>); font-size:var(<span class="cp">--text-label-lg</span>); font-weight:<span class="cv">600</span>; letter-spacing:<span class="cv">0.1em</span>; text-transform:<span class="cv">uppercase</span>; color:var(<span class="cp">--color-text-label</span>); }
+<span class="cs">.tag</span>          { font-family:var(<span class="cp">--font-label</span>); font-size:var(<span class="cp">--text-label-md</span>); font-weight:<span class="cv">600</span>; letter-spacing:<span class="cv">0.08em</span>; text-transform:<span class="cv">uppercase</span>; }</div>
+  </div>
+</div>
+
+<!-- SPECIMENS TAB -->
+<div id="tab-specimens" class="tab-panel">
+  <p class="sec-lbl">Live component specimens</p>
+  <div id="spec-wrap"></div>
+</div>
+
+<!-- RULES TAB -->
+<div id="tab-rules" class="tab-panel">
+  <p class="sec-lbl">Typography rules</p>
+  <div class="card">
+    <strong style="font-size:13px">Universal rules</strong>
+    <ul class="rule-list">
+      <li><i class="ti ti-check ri-ok" aria-hidden="true"></i><div>Use <code class="ic">clamp(min, vw, max)</code> for all display and H1–H2 sizes. H3 and below can be fixed px — they're stable enough at all viewports.</div></li>
+      <li><i class="ti ti-check ri-ok" aria-hidden="true"></i><div>Manrope headings always carry negative letter-spacing: <code class="ic">-0.025em</code> at hero, tapering to <code class="ic">-0.005em</code> by H4. Never use zero or positive tracking on headings.</div></li>
+      <li><i class="ti ti-check ri-ok" aria-hidden="true"></i><div>IBM Plex Mono labels always use <code class="ic">+0.08em</code> to <code class="ic">+0.12em</code> letter-spacing + <code class="ic">text-transform: uppercase</code>. Required for readability at 9–11px.</div></li>
+      <li><i class="ti ti-check ri-ok" aria-hidden="true"></i><div>Body line-height is always <code class="ic">1.7</code>. Use <code class="ic">1.4</code> only for buttons and labels. Never below <code class="ic">1.4</code>.</div></li>
+      <li><i class="ti ti-check ri-ok" aria-hidden="true"></i><div>Teal accent <code class="ic">#0FA3B1</code> is used for inline heading spans, CTAs, and label color. Gold is reserved for "featured / achievement" badges only.</div></li>
+      <li><i class="ti ti-check ri-ok" aria-hidden="true"></i><div>On mobile, increase line-height by <code class="ic">0.05</code> (e.g. body goes <code class="ic">1.7 → 1.75</code>) and ensure minimum tap targets of 44px for any clickable text.</div></li>
+      <li><i class="ti ti-x ri-bad" aria-hidden="true"></i><div>Never mix fonts within a role. Headings = Manrope only. Body = Inter only. Labels/Logo = IBM Plex Mono only. No exceptions in production.</div></li>
+      <li><i class="ti ti-x ri-bad" aria-hidden="true"></i><div>Never use unloaded weights. Loaded weights are: IBM Plex Mono 400/600/700, Manrope 400/600/700/800, Inter 400/500/600. Using 300 or 900 triggers FOUT.</div></li>
+      <li><i class="ti ti-x ri-bad" aria-hidden="true"></i><div>Never center-align body paragraphs. Center only: hero H1, section micro-labels, short CTAs. All paragraphs are left-aligned.</div></li>
+      <li><i class="ti ti-x ri-bad" aria-hidden="true"></i><div>Gold <code class="ic">#D4AF37</code> fails WCAG AA on light backgrounds. On light mode use deep gold <code class="ic">#B8860B</code> for text. Gold is safe only on dark surfaces or as a background fill color.</div></li>
+      <li><i class="ti ti-x ri-bad" aria-hidden="true"></i><div>On mobile, never set body text below <code class="ic">14px</code>. Labels are the only exception at <code class="ic">10px</code> (short, uppercase, high contrast).</div></li>
+    </ul>
+  </div>
+  <div class="card">
+    <strong style="font-size:13px">Responsive behavior cheatsheet</strong>
+    <div class="two-col" style="margin-top:10px">
+      <div class="half-card"><p class="lbl"><i class="ti ti-device-mobile" aria-hidden="true"></i> Mobile &lt;768px</p>
+        <ul class="rule-list" style="margin-top:0">
+          <li style="padding:5px 0;font-size:11px;border-bottom:0.5px solid var(--color-border-tertiary)">Stack nav: hamburger menu, logo centered</li>
+          <li style="padding:5px 0;font-size:11px;border-bottom:0.5px solid var(--color-border-tertiary)">Hero H1: <code class="ic">clamp(26px,8vw,32px)</code></li>
+          <li style="padding:5px 0;font-size:11px;border-bottom:0.5px solid var(--color-border-tertiary)">Body min: <code class="ic">14px</code></li>
+          <li style="padding:5px 0;font-size:11px;border-bottom:0.5px solid var(--color-border-tertiary)">Project cards: single column</li>
+          <li style="padding:5px 0;font-size:11px">CTA buttons: full width <code class="ic">w-100</code></li>
+        </ul>
+      </div>
+      <div class="half-card"><p class="lbl"><i class="ti ti-device-tablet" aria-hidden="true"></i> Tablet 768–1199px</p>
+        <ul class="rule-list" style="margin-top:0">
+          <li style="padding:5px 0;font-size:11px;border-bottom:0.5px solid var(--color-border-tertiary)">Nav: full links visible, compact</li>
+          <li style="padding:5px 0;font-size:11px;border-bottom:0.5px solid var(--color-border-tertiary)">Hero H1: <code class="ic">clamp(32px,5vw,40px)</code></li>
+          <li style="padding:5px 0;font-size:11px;border-bottom:0.5px solid var(--color-border-tertiary)">Body: <code class="ic">15–16px</code></li>
+          <li style="padding:5px 0;font-size:11px;border-bottom:0.5px solid var(--color-border-tertiary)">Project cards: 2-column grid</li>
+          <li style="padding:5px 0;font-size:11px">CTA buttons: inline</li>
+        </ul>
+      </div>
+    </div>
+    <div class="half-card" style="margin-top:10px"><p class="lbl"><i class="ti ti-device-laptop" aria-hidden="true"></i> Desktop 1200px+</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div style="font-size:11px;color:var(--color-text-secondary)">Hero H1: <strong style="color:var(--color-text-primary)">48–64px</strong></div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">Body: <strong style="color:var(--color-text-primary)">16px</strong></div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">Cards: <strong style="color:var(--color-text-primary)">2–3 col grid</strong></div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">Nav logo: <strong style="color:var(--color-text-primary)">16–18px</strong></div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">Section H2: <strong style="color:var(--color-text-primary)">36px</strong></div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">Hero sub: <strong style="color:var(--color-text-primary)">18px</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+var MODE='both', BP='all';
+
+var SCALE=[
+  {token:'display-xl',font:'Manrope',w:'800',sm:'32px',md:'40px',lg:'64px',lh:'1.0',tr:'-0.025em',use:'Hero H1'},
+  {token:'display-lg',font:'Manrope',w:'800',sm:'26px',md:'34px',lg:'48px',lh:'1.05',tr:'-0.02em',use:'H1 alt'},
+  {token:'heading-xl',font:'Manrope',w:'700',sm:'22px',md:'28px',lg:'36px',lh:'1.1',tr:'-0.018em',use:'Section titles'},
+  {token:'heading-lg',font:'Manrope',w:'700',sm:'18px',md:'22px',lg:'28px',lh:'1.15',tr:'-0.015em',use:'H2'},
+  {token:'heading-md',font:'Manrope',w:'700',sm:'16px',md:'18px',lg:'22px',lh:'1.2',tr:'-0.01em',use:'H3'},
+  {token:'heading-sm',font:'Manrope',w:'600',sm:'15px',md:'16px',lg:'18px',lh:'1.3',tr:'-0.005em',use:'H4 / Card titles'},
+  {token:'body-lg',font:'Inter',w:'400',sm:'16px',md:'17px',lg:'18px',lh:'1.7',tr:'0',use:'Hero subtext'},
+  {token:'body-md',font:'Inter',w:'400',sm:'14px',md:'15px',lg:'16px',lh:'1.7',tr:'0',use:'Default body'},
+  {token:'body-sm',font:'Inter',w:'400',sm:'13px',md:'13px',lg:'14px',lh:'1.6',tr:'0',use:'Card descriptions'},
+  {token:'body-xs',font:'Inter',w:'400',sm:'12px',md:'12px',lg:'12px',lh:'1.5',tr:'0',use:'Captions / footer'},
+  {token:'ui-md',font:'Inter',w:'500–600',sm:'13px',md:'14px',lg:'14px',lh:'1.4',tr:'0',use:'Buttons / Nav links'},
+  {token:'ui-sm',font:'Inter',w:'500',sm:'12px',md:'12px',lg:'12px',lh:'1.4',tr:'0',use:'Small buttons'},
+  {token:'label-lg',font:'IBM Plex Mono',w:'600',sm:'10px',md:'11px',lg:'11px',lh:'1.3',tr:'+0.10em',use:'Section labels'},
+  {token:'label-md',font:'IBM Plex Mono',w:'600',sm:'9px',md:'10px',lg:'10px',lh:'1.3',tr:'+0.12em',use:'Tech tags'},
+  {token:'code-md',font:'IBM Plex Mono',w:'400',sm:'12px',md:'13px',lg:'14px',lh:'1.6',tr:'0',use:'Code blocks'},
+  {token:'logo',font:'IBM Plex Mono',w:'700',sm:'14px',md:'15px',lg:'18px',lh:'1.2',tr:'0',use:'Wordmark / Nav'},
+];
+
+var COLORS={
+  light:[
+    {role:'Heading text',val:'#0F172A',note:'All H1–H4, display type',useon:'light'},
+    {role:'Body text',val:'#1E293B',note:'Paragraphs, descriptions',useon:'light'},
+    {role:'Muted text',val:'#64748B',note:'Card descriptions, footer, placeholders',useon:'light'},
+    {role:'Label / accent',val:'#0B6E79',note:'IBM Plex Mono uppercase labels',useon:'light'},
+    {role:'Link / CTA',val:'#0FA3B1',note:'Buttons, inline links, hover states',useon:'light'},
+    {role:'Featured gold',val:'#B8860B',note:'Featured badge text on #F5E6A3 bg',useon:'light'},
+    {role:'Gold bg',val:'#F5E6A3',note:'Featured badge background only',useon:'light'},
+    {role:'Teal bg (soft)',val:'#D9F3F6',note:'Tag backgrounds, section tints',useon:'light'},
+    {role:'Page bg',val:'#F8FAFC',note:'Default page background',useon:'light'},
+    {role:'Surface / card',val:'#FFFFFF',note:'Card backgrounds',useon:'light'},
+    {role:'Navbar bg',val:'#0B6E79',note:'Deep teal for navbar and footer',useon:'light'},
+  ],
+  dark:[
+    {role:'Heading text',val:'#E5E7EB',note:'All H1–H4, display type',useon:'dark'},
+    {role:'Body text',val:'#CBD5E1',note:'Paragraphs, descriptions',useon:'dark'},
+    {role:'Muted text',val:'#94A3B8',note:'Card descriptions, footer, placeholders',useon:'dark'},
+    {role:'Label / accent',val:'#0FA3B1',note:'IBM Plex Mono uppercase labels',useon:'dark'},
+    {role:'Link / CTA',val:'#0FA3B1',note:'Buttons, inline links, hover states',useon:'dark'},
+    {role:'Featured gold',val:'#D4AF37',note:'Featured badge text and icon on dark surface',useon:'dark'},
+    {role:'Gold bg',val:'rgba(212,175,55,.15)',note:'Featured badge background (transparent)',useon:'dark'},
+    {role:'Teal bg (soft)',val:'rgba(15,163,177,.15)',note:'Tag backgrounds on dark cards',useon:'dark'},
+    {role:'Page bg',val:'#0B1220',note:'Default dark background',useon:'dark'},
+    {role:'Surface / card',val:'#111827',note:'Card backgrounds',useon:'dark'},
+    {role:'Navbar bg',val:'#0B1220',note:'Same as page bg in dark — structure via border',useon:'dark'},
+  ]
+};
+
+function renderScale(){
+  var cols={sm:MODE!='light'&&MODE!='dark',md:true,lg:true};
+  var bpCols=document.querySelectorAll('.bp-col');
+  var rows='';
+  SCALE.forEach(function(r){
+    if(BP!='all'&&!matchesBp(r)) return;
+    var fontTag=r.font==='Manrope'?'t-teal':r.font==='IBM Plex Mono'?'t-gold':'t-gray';
+    rows+='<tr>';
+    rows+='<td><span class="tpill">'+r.token+'</span></td>';
+    rows+='<td style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--color-text-secondary)">'+r.font+'</td>';
+    rows+='<td style="font-size:11px">'+r.w+'</td>';
+    if(BP==='all'||BP==='sm') rows+='<td><span class="bp-pill bp-sm">'+r.sm+'</span></td>';
+    if(BP==='all'||BP==='md') rows+='<td><span class="bp-pill bp-md">'+r.md+'</span></td>';
+    if(BP==='all'||BP==='lg') rows+='<td><span class="bp-pill bp-lg">'+r.lg+'</span></td>';
+    rows+='<td style="font-size:11px">'+r.lh+'</td>';
+    rows+='<td style="font-size:11px;font-family:\'IBM Plex Mono\',monospace">'+r.tr+'</td>';
+    rows+='<td><span class="utag '+fontTag+'">'+r.use+'</span></td>';
+    rows+='</tr>';
+  });
+  document.getElementById('scale-body').innerHTML=rows;
+  var thSm=document.getElementById('col-sm');
+  var thMd=document.getElementById('col-md');
+  var thLg=document.getElementById('col-lg');
+  if(thSm) thSm.style.display=(BP==='md'||BP==='lg')?'none':'';
+  if(thMd) thMd.style.display=(BP==='sm')?'none':'';
+}
+
+function matchesBp(r){return true;}
+
+function renderColors(){
+  var panels=document.getElementById('color-panels');
+  var modes=[];
+  if(MODE==='both'||MODE==='light') modes.push('light');
+  if(MODE==='both'||MODE==='dark') modes.push('dark');
+  var html='';
+  modes.forEach(function(m){
+    var isLight=m==='light';
+    var bgDemo=isLight?'#F8FAFC':'#0B1220';
+    var badge=isLight?'<span class="mode-badge mb-light"><i class="ti ti-sun" aria-hidden="true"></i> Light mode</span>':'<span class="mode-badge mb-dark"><i class="ti ti-moon" aria-hidden="true"></i> Dark mode</span>';
+    html+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'+badge+'</div>';
+    html+='<div style="background:'+bgDemo+';border-radius:8px;padding:12px;border:0.5px solid rgba(128,128,128,.15)">';
+    COLORS[m].forEach(function(c){
+      var isTransparent=c.val.indexOf('rgba')===0;
+      var swBg=isTransparent?c.val:c.val;
+      html+='<div class="swatch-row">';
+      html+='<div class="swatch" style="background:'+swBg+';'+(isTransparent?'border:1px dashed rgba(255,255,255,.2)':'')+'"></div>';
+      html+='<div class="swatch-info" style="color:'+(isLight?'#334155':'#94A3B8')+'">'+c.role+'</div>';
+      html+='<div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:'+(isLight?'#0FA3B1':'#0FA3B1');
+      html+=';margin-left:auto">'+c.val+'</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+    html+='<p style="font-size:11px;color:var(--color-text-secondary);margin-top:8px">'+c_note(m)+'</p></div>';
+  });
+  panels.innerHTML=html;
+}
+
+function c_note(m){
+  return m==='light'
+    ? 'Light mode uses deep variants of all accent colors to maintain WCAG AA contrast on #F8FAFC backgrounds.'
+    : 'Dark mode uses primary teal #0FA3B1 for both labels and links. Gold shifts to #D4AF37 — safe on #0B1220 / #111827 surfaces.';
+}
+
+function renderSpecimens(){
+  var wrap=document.getElementById('spec-wrap');
+  if(!wrap)return;
+  var modes=[];
+  if(MODE==='both'||MODE==='light') modes.push('light');
+  if(MODE==='both'||MODE==='dark') modes.push('dark');
+  var bps=[];
+  if(BP==='all'||BP==='sm') bps.push({id:'sm',label:'Mobile',w:'320px',icon:'ti-device-mobile'});
+  if(BP==='all'||BP==='md') bps.push({id:'md',label:'Tablet',w:'520px',icon:'ti-device-tablet'});
+  if(BP==='all'||BP==='lg') bps.push({id:'lg',label:'Desktop',w:'100%',icon:'ti-device-laptop'});
+  var html='';
+  modes.forEach(function(m){
+    var dark=m==='dark';
+    var pageBg=dark?'#0B1220':'#F8FAFC';
+    var surfBg=dark?'#111827':'#FFFFFF';
+    var navBg=dark?'#0B1220':'#0B6E79';
+    var hColor=dark?'#E5E7EB':'#0F172A';
+    var bColor=dark?'#CBD5E1':'#1E293B';
+    var mColor=dark?'#94A3B8':'#64748B';
+    var lColor=dark?'#0FA3B1':'#0B6E79';
+    var glColor=dark?'#D4AF37':'#B8860B';
+    var glBg=dark?'rgba(212,175,55,.15)':'#F5E6A3';
+    var tlBg=dark?'rgba(15,163,177,.15)':'#D9F3F6';
+    var badgeColor=dark?'#fff':'#fff';
+    html+='<div class="card"><p style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:'+(dark?'#0FA3B1':'#0B6E79')+';margin-bottom:10px">'+(dark?'<i class="ti ti-moon" aria-hidden="true"></i>':'<i class="ti ti-sun" aria-hidden="true"></i>')+' '+m+' mode — all breakpoints</p>';
+    html+='<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start">';
+    bps.forEach(function(bp){
+      var heroSize=bp.id==='sm'?'22px':bp.id==='md'?'28px':'36px';
+      var subSize=bp.id==='sm'?'13px':bp.id==='md'?'14px':'16px';
+      var bdSize=bp.id==='sm'?'12px':'13px';
+      var labelSize=bp.id==='sm'?'9px':'10px';
+      var logoSize=bp.id==='sm'?'11px':'13px';
+      var navLinkSize=bp.id==='sm'?'11px':'12px';
+      html+='<div style="flex:1;min-width:200px;max-width:'+bp.w+'">';
+      html+='<p style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:6px"><i class="ti '+bp.icon+'" aria-hidden="true"></i> '+bp.label+'</p>';
+      html+='<div style="background:'+pageBg+';border-radius:8px;padding:10px;border:0.5px solid rgba(128,128,128,.12)">';
+      html+='<div style="display:flex;align-items:center;justify-content:space-between;background:'+navBg+';padding:7px 10px;border-radius:5px;margin-bottom:8px">';
+      html+='<span style="font-family:\'IBM Plex Mono\',monospace;font-size:'+logoSize+';font-weight:700;color:#fff;line-height:1.2">fritzc<br>dev</span>';
+      if(bp.id!=='sm'){html+='<div style="display:flex;gap:10px"><span style="font-family:\'Inter\',sans-serif;font-size:'+navLinkSize+';color:rgba(255,255,255,.6)">Projects</span><span style="font-family:\'Inter\',sans-serif;font-size:'+navLinkSize+';color:rgba(255,255,255,.6)">About</span></div>';}
+      html+='<span style="font-family:\'Inter\',sans-serif;font-size:10px;font-weight:600;background:#0FA3B1;color:#fff;padding:3px 8px;border-radius:4px">Hire Me</span>';
+      html+='</div>';
+      html+='<div style="padding:8px 4px">';
+      html+='<span style="font-family:\'IBM Plex Mono\',monospace;font-size:'+labelSize+';font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0FA3B1;border:1px solid #0FA3B1;padding:1px 6px;border-radius:2px;display:inline-block;margin-bottom:6px">● Available</span>';
+      html+='<div style="font-family:\'Manrope\',sans-serif;font-weight:800;font-size:'+heroSize+';line-height:1.1;letter-spacing:-0.02em;color:'+hColor+';margin-bottom:6px">Building the <span style="color:#0FA3B1">Digital Future</span></div>';
+      html+='<div style="font-family:\'Inter\',sans-serif;font-size:'+subSize+';line-height:1.65;color:'+mColor+';margin-bottom:10px">Multi-disciplinary developer specializing in high-performance web apps.</div>';
+      html+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">';
+      html+='<span style="font-family:\'Inter\',sans-serif;font-size:11px;font-weight:600;background:#0FA3B1;color:#fff;padding:5px 10px;border-radius:5px">Explore →</span>';
+      if(bp.id!=='sm') html+='<span style="font-family:\'Inter\',sans-serif;font-size:11px;font-weight:600;background:transparent;color:'+hColor+';padding:5px 10px;border-radius:5px;border:1px solid '+mColor+'">Resume</span>';
+      html+='</div>';
+      html+='<div style="background:'+surfBg+';border:0.5px solid rgba(128,128,128,.15);border-radius:7px;padding:9px">';
+      html+='<div style="display:flex;gap:4px;margin-bottom:5px"><span style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;padding:1px 5px;border-radius:2px;background:'+tlBg+';color:'+lColor+';font-weight:600">React</span><span style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;padding:1px 5px;border-radius:2px;background:'+glBg+';color:'+glColor+';font-weight:600;border:1px solid '+glColor+'22">★ Featured</span></div>';
+      html+='<div style="font-family:\'Manrope\',sans-serif;font-size:13px;font-weight:700;color:'+hColor+';margin-bottom:3px">Nexus Analytics Engine</div>';
+      html+='<div style="font-family:\'Inter\',sans-serif;font-size:'+bdSize+';color:'+mColor+';line-height:1.5;margin-bottom:5px">Real-time processing platform handling 2M events/sec.</div>';
+      html+='<div style="font-family:\'Inter\',sans-serif;font-size:11px;font-weight:600;color:#0FA3B1">View Case Study →</div>';
+      html+='</div></div></div></div>';
+    });
+    html+='</div></div>';
+  });
+  wrap.innerHTML=html;
+}
+
+function setMode(m){
+  MODE=m;
+  ['both','light','dark'].forEach(function(v){document.getElementById('m-'+v).classList.toggle('on',v===m)});
+  refresh();
+}
+function setBp(b){
+  BP=b;
+  ['all','sm','md','lg'].forEach(function(v){document.getElementById('bp-'+v).classList.toggle('on',v===b)});
+  refresh();
+}
+function switchTab(id){
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('on')});
+  document.getElementById('tab-'+id).classList.add('on');
+  event.target.classList.add('on');
+  refresh();
+}
+function refresh(){
+  renderScale();
+  renderColors();
+  renderSpecimens();
+}
+function cp(id){
+  var el=document.getElementById(id);
+  if(!el)return;
+  navigator.clipboard.writeText(el.innerText).then(function(){
+    var btn=el.previousElementSibling.querySelector('.copy-btn');
+    var orig=btn.textContent;
+    btn.textContent='Copied!';
+    setTimeout(function(){btn.textContent=orig},1500);
+  });
+}
+refresh();
+</script>

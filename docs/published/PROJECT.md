@@ -329,3 +329,5 @@ Development work is organized into feature-based milestones and tracked using a 
 
 This separation allows project progress, technical documentation, and implementation to evolve independently while remaining synchronized throughout development.
 
+For the project management workflow, please refer to: `docs/published/PROJECT_MANAGEMENT.md`.
+

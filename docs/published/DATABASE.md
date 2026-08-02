@@ -1,9 +1,0 @@
-Contains
-
-database overview
-collections
-schemas
-indexes
-relationships
-validation
-naming conventions

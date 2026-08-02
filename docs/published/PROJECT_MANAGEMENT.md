@@ -99,6 +99,14 @@ At milestone completion:
 
 This prevents documentation from becoming a parallel development effort.
 
+| Event                            | Documentation Produced   |
+| -------------------------------- | ------------------------ |
+| Milestone completed              | Milestone summary        |
+| Architectural decision finalized | ADR                      |
+| Public API implemented           | API documentation        |
+| Deployment process established   | Deployment documentation |
+
+
 ---
 
 ## 6. Decision Timing Principle

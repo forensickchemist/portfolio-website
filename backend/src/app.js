@@ -13,14 +13,15 @@ Express App
       └── Configuration
 */
 
-const express = require("express");
+import express from "express";
 
 const app = express();
 
 app.get("/health", (req, res) => {
       res.status(200).json({
-            status: "This is healthy."
-      })
+            success: true,
+            message: "API is healthy."
+      });
 });
 
-module.exports = app;
+export default app;

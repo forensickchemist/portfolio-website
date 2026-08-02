@@ -19,7 +19,7 @@ const app = express();
 
 app.get("/health", (req, res) => {
       res.status(200).json({
-            status: "It's A-okay."
+            status: "This is healthy."
       })
 });
 

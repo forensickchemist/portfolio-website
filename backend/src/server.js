@@ -1,12 +1,9 @@
 /*
-Responsible for running the application.
-
-Example responsibilities:
-
-import the app
-determine port
-start HTTP server
-log startup information
+Responsible for:
+- Application startup.
+- Environment initialization.
+- Database connection startup.
+- Starting HTTP server.
 
 server.js
 
@@ -15,11 +12,18 @@ Import App
       ▼
 app.listen(PORT)
  */
-
+import "dotenv/config";
 import app from "./app.js";
+import {connectDatabase} from "./config/database.js";
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-});
+async function startServer() {
+      await connectDatabase();
+
+      app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+      });
+}
+startServer();
+
